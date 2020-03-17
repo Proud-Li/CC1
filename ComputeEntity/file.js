@@ -32,7 +32,8 @@ function file() {
         //"D:\\fefe\fef\tmp1.txt"
         var FilePath = util.safePath(para.Datas.FilePath);
         var pathname = util.PathName(FilePath);
-        var toppath = join('E://', 'worktemp');
+        //var toppath = join('E://', 'worktemp');
+        var toppath = util.getConfig().Attachment;
 
         var tagpath = join(toppath, pathname);
         if (pathname != undefined && pathname != "") {

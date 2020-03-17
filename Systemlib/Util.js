@@ -1,11 +1,23 @@
 
 var fs = require('fs');
 var file = require('path');
-
-
+var join = require('path').join;
 
 
 function Util() {
+
+    this.getConfig = function () {
+        try {
+            // 同步读取
+            var data = fs.readFileSync(join(__dirname, '../config.json'));
+            var config = JSON.parse(data.toString());
+
+            return config;
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+    };
 
     this.GUID = function () {
         var d = new Date().getTime();

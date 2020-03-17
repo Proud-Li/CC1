@@ -3,6 +3,8 @@ var url = require('url');
 var join = require('path').join;
 var swig = require('swig');
 
+var Util = require(join(__dirname,'../Systemlib','Util.js'));
+var util = new Util();
 
 function MyHttp() {
     this.Http = function (app) {
@@ -14,7 +16,8 @@ function MyHttp() {
         app.engine('html', swig.renderFile);//swig，生成动态文件。相当于jstl之流。
         app.engine('js', swig.renderFile);
 
-        var LOCAL_APP_URL = 'd:/webrelease/myhome/src';
+        var LOCAL_APP_URL = util.getConfig().LocalAppUrl;
+
         var APP_NAME = '/myhome';
         app.get(APP_NAME + '/*', function (request, response) {
 

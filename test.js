@@ -2,10 +2,17 @@
 var domain = require("domain");
 var EventEmitter = require("events").EventEmitter;
 
+var join = require('path').join;
+var Util = require(join(__dirname,'./Systemlib','Util.js'));
+var util = new Util();
+
 function init() {
 
 
+    Util.getConfig();
+
 }
+
 
 function monitor(mymain) {
 

@@ -30,7 +30,7 @@ function getJsFiles(path) {
 }
 
 function MQ(execute, callback) {
-    var url = 'amqp://' + 'pdsr:l123456' + '@localhost:5672' + '/vhapi';
+    var url = util.getConfig().MQUrl;
 
     amqp.connect(url, function (err, conn) {
         if (err) {
@@ -50,8 +50,7 @@ function MQ(execute, callback) {
 
 function ncf() {
     this.rabbitMQ = function (callback) {
-
-        var url = 'amqp://' + 'pdsr:l123456' + '@localhost:5672' + '/vhapi';
+        var url = util.getConfig().MQUrl;
 
         amqp.connect(url, function (err, conn) {
             if (err) return;
@@ -144,7 +143,7 @@ function ncf() {
         });
         urls.push(stmp);
 
-        stmp = '/api/test2';
+        stmp = '/api/test';
         app.post(stmp, function (req, res) {
             var para = req.body;
             res.send(para);
