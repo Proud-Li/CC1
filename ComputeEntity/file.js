@@ -9,7 +9,7 @@ function file() {
     this.routing = "PD.JS.COM_file";
 
     this.execute = function (para) {
-        var response = {"status": 204, "message": ""};
+        var response = {"Status": 204, "Message": ""};
 
         console.log(" [x] in entity %s", para.toString());
         console.log(" [x] %s", para.taskId);
@@ -18,8 +18,8 @@ function file() {
         console.log(" [x] %s", JSON.stringify(para));
 
         if (para.Datas == undefined || para.Datas.FilePath == undefined) {
-            response.status = 400;
-            response.massage = " Datas/FilePath is undefined";
+            response.Status = 400;
+            response.Message = " Datas/FilePath is undefined";
             return response;
         }
 
@@ -37,7 +37,7 @@ function file() {
         var config = util.getConfig();
 
         if (config == undefined || config.Attachment == undefined || config.Attachment === "") {
-            response.message = "没有配置 附件目录";
+            response.Message = "没有配置 附件目录";
             return response;
         }
 
@@ -65,7 +65,7 @@ function file() {
         var dataBuffer = new Buffer(para.Datas.Context, 'base64');
         fs.writeFileSync(tagfile, dataBuffer, 'utf8', function (err) {
             if (err) {
-                response.message = JSON.stringify(err);
+                response.Message = JSON.stringify(err);
                 return response;
             }
             else {
@@ -73,8 +73,8 @@ function file() {
             }
         });
 
-        response.message = tagfile + " " + "finish";
-        response.status = 200;
+        response.Message = tagfile + " " + "finish";
+        response.Status = 200;
         return response;
 
     };
