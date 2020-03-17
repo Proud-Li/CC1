@@ -2,5 +2,5 @@
   "MQUrl":"amqp://pdsr:l123456@localhost:5672/vhapi",
   "LocalAppUrl":"d:/webrelease/myhome/src",
   "Attachment":"e:/worktemp",
-  "Remark":""
+  "Remark":" "
 }
