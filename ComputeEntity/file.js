@@ -9,7 +9,7 @@ function file() {
     this.routing = "PD.JS.COM_file";
 
     this.execute = function (para) {
-        var response = {"status": 204, "massage": ""};
+        var response = {"status": 204, "message": ""};
 
         console.log(" [x] in entity %s", para.toString());
         console.log(" [x] %s", para.taskId);
@@ -33,7 +33,15 @@ function file() {
         var FilePath = util.safePath(para.Datas.FilePath);
         var pathname = util.PathName(FilePath);
         //var toppath = join('E://', 'worktemp');
-        var toppath = util.getConfig().Attachment;
+
+        var config = util.getConfig();
+
+        if (config == undefined || config.Attachment == undefined || config.Attachment === "") {
+            response.message = "没有配置 附件目录";
+            return response;
+        }
+
+        var toppath = config.Attachment;
 
         var tagpath = join(toppath, pathname);
         if (pathname != undefined && pathname != "") {
@@ -57,7 +65,7 @@ function file() {
         var dataBuffer = new Buffer(para.Datas.Context, 'base64');
         fs.writeFileSync(tagfile, dataBuffer, 'utf8', function (err) {
             if (err) {
-                response.massage = JSON.stringify(err);
+                response.message = JSON.stringify(err);
                 return response;
             }
             else {
@@ -65,7 +73,7 @@ function file() {
             }
         });
 
-        response.massage = tagfile + " " + "finish";
+        response.message = tagfile + " " + "finish";
         response.status = 200;
         return response;
 
