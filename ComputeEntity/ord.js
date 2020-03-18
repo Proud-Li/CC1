@@ -22,6 +22,6 @@ function ord() {
 
         return response;
     };
-}{}
+}
 
 module.exports=ord;

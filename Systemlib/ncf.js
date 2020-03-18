@@ -48,6 +48,15 @@ function MQ(execute, callback) {
     });
 }
 
+function MCFHelp(para) {
+    MQ(function (err, conn, channel) {
+        //消息持久化
+        var exchange = 'pd.direct';
+        channel.assertExchange(exchange, 'direct', {durable: true});
+        channel.publish(exchange, para.routing, new Buffer.from(JSON.stringify(para)), {persistent: true});
+    });
+}
+
 function ncf() {
     this.rabbitMQ = function (callback) {
         var url = util.getConfig().MQUrl;
@@ -102,6 +111,10 @@ function ncf() {
 
     };
 
+    this.MCFHelp = function (para) {
+        MCFHelp(para);
+    };
+
     this.api = function () {
 
         //设置跨域访问
@@ -115,7 +128,6 @@ function ncf() {
         });
 
 
-
         var urls = [];
 
         var stmp = '/api/datasync';
@@ -123,14 +135,17 @@ function ncf() {
             var para = req.body;
             para.taskId = util.GUID();
 
-            if (para.routing != undefined && para.routing != "") {
-                MQ(function (err, conn, channel) {
-                    //消息持久化
-                    var exchange = 'pd.direct';
-                    channel.assertExchange(exchange, 'direct', {durable: true});
-                    channel.publish(exchange, para.routing, new Buffer(JSON.stringify(para)), {persistent: true});
-                });
-                res.send({"status": 200, "massage": " "});
+            if ((para.routing != undefined && para.routing != "")
+                || (para.Routing != undefined && para.Routing != "")) {
+                para.routing = para.routing || para.Routing;
+                MCFHelp(para);
+                //MQ(function (err, conn, channel) {
+                //    //消息持久化
+                //    var exchange = 'pd.direct';
+                //    channel.assertExchange(exchange, 'direct', {durable: true});
+                //    channel.publish(exchange, para.routing, new Buffer.from(JSON.stringify(para)), {persistent: true});
+                //});
+                res.send({"Status": 200, "Message": " Routing " + para.routing});
             }
             else {
                 //直接同步调用
