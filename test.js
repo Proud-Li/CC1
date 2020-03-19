@@ -1,4 +1,4 @@
-
+﻿
 var domain = require("domain");
 var EventEmitter = require("events").EventEmitter;
 
@@ -8,7 +8,7 @@ var util = new Util();
 
 function init() {
 
-
+//121
     Util.getConfig();
 
 }
