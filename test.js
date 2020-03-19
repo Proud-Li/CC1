@@ -9,6 +9,7 @@ var util = new Util();
 function init() {
 
 //121
+    //122
     Util.getConfig();
 
 }
