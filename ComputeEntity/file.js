@@ -75,14 +75,14 @@ function file() {
             }
         });
 
-        if (para.Datas.ActionCode != undefined && para.Datas.ActionCode == "git") {
-            para.CommandCode = "git";
-            para.routing = "PD.JS.COM_Git";
-            para.Datas.Tagfile = tagfile;
-            para.Datas.Context = "";
-
-            ncf.MCFHelp(para);
-        }
+        //if (para.Datas.ActionCode != undefined && para.Datas.ActionCode == "git") {
+        //    para.CommandCode = "git";
+        //    para.routing = "PD.JS.COM_Git";
+        //    para.Datas.Tagfile = tagfile;
+        //    para.Datas.Context = "";
+        //
+        //    ncf.MCFHelp(para);
+        //}
 
         response.Message = tagfile + " " + "finish";
         response.Status = 200;
