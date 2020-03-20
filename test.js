@@ -12,6 +12,8 @@ function init() {
     //122
 //123
     //124
+    //125
+    //126
     Util.getConfig();
 
 }
