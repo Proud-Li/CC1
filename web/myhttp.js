@@ -13,7 +13,7 @@ function MyHttp() {
         app.set('view cache', false);
         app.set('views', '/');
         app.set('view engine', 'html');
-        app.engine('html', swig.renderFile);//swig，生成动态文件。相当于jstl之流。
+        app.engine('html', swig.renderFile);//swig，生成动态文件。相当于jstl之流。121
         app.engine('js', swig.renderFile);
 
         var LOCAL_APP_URL = util.getConfig().LocalAppUrl;
