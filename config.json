@@ -1,5 +1,5 @@
 {
-  "MQUrl":"amqp://pdsr:l123456@localhost:5672/vhapi",
+  "MQUrl":"amqp://username:password@localhost:5672/vhapi",
   "LocalAppUrl":"d:/webrelease/myhome/src",
   "Attachment":"e:/worktemp",
   "GitPath":"E:/worktemp/Users/xxxx/xxx/link",
