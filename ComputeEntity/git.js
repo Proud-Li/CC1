@@ -16,7 +16,6 @@ function git() {
         }
 
         shell.cd(util.getConfig().GitPath);
-        //shell.cd('E://worktemp//Users//lizh//EBC//link');
 
         if (para.gitCommandCode == undefined || para.gitCommandCode == "") {
             para.gitCommandCode = "git --help";
