@@ -6,24 +6,11 @@ var join = require('path').join;
 var Util = require(join(__dirname,'./Systemlib','Util.js'));
 var util = new Util();
 
-
-const shell = require("shelljs");
-
 function init() {
 
-    console.log(shell);
-
-
-
-    if (!shell.which('git')) {
-        shell.echo('Sorry, this script requires git');
-        shell.exit(1);
-    }
-
-    shell.echo('hello world');
-
-
-    // Util.getConfig();
+//121
+    //122
+    Util.getConfig();
 
 }
 
