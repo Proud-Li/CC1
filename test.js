@@ -10,6 +10,7 @@ function init() {
 
 //121
     //122
+//123
     Util.getConfig();
 
 }
