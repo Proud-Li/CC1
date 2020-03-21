@@ -14,6 +14,7 @@ app.use(bodyParser.urlencoded({limit: '1000mb', extended: true}));
 
 var Util = require(join(__dirname,'../Systemlib','Util.js'));
 var util = new Util();
+const LinkConfig = util.getConfig();
 
 function getJsFiles(path) {
     var jsfiles = [];
@@ -59,8 +60,7 @@ function MCFHelp(para) {
 
 function ncf() {
     this.rabbitMQ = function (callback) {
-        var url = util.getConfig().MQUrl;
-
+        var url = LinkConfig.MQUrl;
         amqp.connect(url, function (err, conn) {
             if (err) return;
 
@@ -91,17 +91,34 @@ function ncf() {
 
                 });
 
+                LinkConfig.WorkStation = LinkConfig.WorkStation == undefined ? false : LinkConfig.WorkStation;
 
-                var index = -1;
+                if (LinkConfig.WorkStation && LinkConfig.WorkerList != undefined) {
+                    LinkConfig.WorkerList = LinkConfig.WorkerList.split(',');
+                }
+
+                if (LinkConfig.WorkerList == undefined) {
+                    LinkConfig.WorkerList = [];
+                }
+
+
+                var index = 0;
                 paras.forEach(function (item, i) {
                     var iWorker = require(join(__dirname, '../Systemlib', 'worker.js'));
                     var worker = new iWorker();
-                    worker.init(item, channel);
 
-                    //console.log(" [*] worker ",item.CommandCode,i);
-                    index = i;
+                    if ((LinkConfig.WorkStation == false)//ncf
+                        || (LinkConfig.WorkerList.indexOf(item.CommandCode) >= 0)//工作站
+                    ) {
+                        if (LinkConfig.WorkStation) {
+                            console.log(" [*] worker ", item.CommandCode, i);
+                        }
+
+                        worker.init(item, channel);
+
+                        index++;
+                    }
                 });
-                index++;
                 console.log(" [*] 2 worker 启动 Entity*%d", index);
 
                 if (callback != undefined)callback();
