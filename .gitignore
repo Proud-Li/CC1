@@ -16,5 +16,5 @@ results
 
 npm-debug.log
 node_modules
-.idea
-.vs
+.idea/
+.vs/
