@@ -1,9 +1,0 @@
-{
-  "WorkStation": false,
-  "WorkerList":"ord.js,dlv.js",
-  "MQUrl": "amqp://username:password@localhost:5672/vhapi",
-  "LocalAppUrl": "d:/webrelease/myhome/src",
-  "Attachment": "e:/worktemp",
-  "GitPath": "E:/worktemp/Users/xxxx/xxx/link",
-  "Remark": " "
-}
