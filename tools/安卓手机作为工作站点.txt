@@ -1,0 +1,9 @@
+
+工具包
+1 Termux ：Linux模拟器
+    apt update && apt upgrade
+    apt install nodejs
+    apt install npm
+    墙内npm install -g cnpm --registry=https://registry.npm.taobao.org
+2 pckeyboard ：输入法
+

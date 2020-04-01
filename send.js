@@ -1,6 +1,6 @@
 var amqp = require('amqplib/callback_api');
 
-var url='amqp://'+'pdsr:l123456'+'@localhost:5672'+'/vhapi';
+var url='amqp://'+'pdsr:l818726'+'@192.168.0.102:5672'+'/vhapi';
 
 var fs = require('fs');
 var join = require('path').join;
@@ -13,25 +13,37 @@ amqp.connect(url, function(err, conn) {
         conn.createChannel(function (err, channel) {
 
             var msg = process.argv.slice(2).join(' ') || "Hello World!";
+            /*
+             var data = fs.readFileSync('g:/tmp.txt');
+             //var bufferData = new Buffer(data,'base64');
+             var contextbase64 = data.toString('base64');
 
-            var data = fs.readFileSync('g:/tmp.txt');
-            //var bufferData = new Buffer(data,'base64');
-            var contextbase64 = data.toString('base64');
+             var para = {
+             "CommandCode": "file",
+             "routing": "PD.JS.COM_file",
+             //"Datas": {"FilePath": "D:\\Users\\lizh2\\tmp.txt","Context": contextbase64},
+             //"Datas": JSON.stringify({"FilePath": "you/file/path/tmp.txt", "Context": contextbase64}),
+             "Datas": {"FilePath": "you/file/path/tmp.txt", "Context": contextbase64},
+             "Msg": msg,
+             "taskId": util.GUID()
+             };
 
-            var para = {
-                "CommandCode": "file",
-                "routing": "PD.JS.COM_file",
-                //"Datas": {"FilePath": "D:\\Users\\lizh2\\tmp.txt","Context": contextbase64},
-                //"Datas": JSON.stringify({"FilePath": "you/file/path/tmp.txt", "Context": contextbase64}),
-                "Datas": {"FilePath": "you/file/path/tmp.txt", "Context": contextbase64},
-                "Msg": msg,
-                "taskId": util.GUID()
-            };
+             */
 
-            //channel.sendToQueue(q, new Buffer('Hello World!'));
-            //消息持久化
-            channel.sendToQueue(para.routing, new Buffer(JSON.stringify(para)), {persistent: true});
-            console.log(" [x] Sent '%s'", msg + ' ' + JSON.stringify(para));
+            for(var i=0;i<10;i++) {
+                var para = {
+                    "CommandCode": "ord",
+                    "routing": "PD.JS.COP_Ord",
+                    "Msg": msg,
+                    "taskId": util.GUID()
+                };
+
+                //消息持久化
+                channel.sendToQueue(para.routing, new Buffer.from(JSON.stringify(para)), {persistent: true});
+                console.log(" [x] Sent '%s'", msg + ' ' + JSON.stringify(para));
+
+            }
+
 
 
         });
