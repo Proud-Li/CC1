@@ -11,11 +11,12 @@ function Util() {
             // 同步读取
             var data = fs.readFileSync(join(__dirname, '../config.json'));
             var config = JSON.parse(data.toString());
-
+            if (config == undefined)config = {};
             return config;
         }
         catch (e) {
             console.log(e.message);
+            return {};
         }
     };
 
