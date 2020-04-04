@@ -60,7 +60,7 @@ function NCFHelp(para) {
 
     MQ(function (err, conn, channel) {
         //消息持久化
-        channel.assertExchange(para.NCFQueue.exchange, 'direct', {durable: true});
+        channel.assertExchange(para.queue.exchange, 'direct', {durable: true});
         channel.publish(exchange, para.routing, new Buffer.from(JSON.stringify(para)), {persistent: true});
     });
 }
