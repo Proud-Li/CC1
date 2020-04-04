@@ -54,13 +54,14 @@ function NCFHelp(para) {
     para.queue = {
         "taskId": util.GUID(),
         "routing": para.routing,
-        "exchange":"pd.direct",
+        "exchange": "pd.direct",
         "remark": ""
     };
 
     MQ(function (err, conn, channel) {
         //消息持久化
-        channel.assertExchange(para.queue.exchange, 'direct', {durable: true});
+        var exchange = para.queue.exchange
+        channel.assertExchange(exchangepara, 'direct', {durable: true});
         channel.publish(exchange, para.routing, new Buffer.from(JSON.stringify(para)), {persistent: true});
     });
 }
