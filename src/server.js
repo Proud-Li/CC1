@@ -4,26 +4,22 @@ var join = require('path').join;
 
 var incf = require(join(__dirname,'Systemlib','ncf.js'));
 var ncf = new incf();
-
 const child_process = require('child_process');
-
 var Util = require(join(__dirname,'Systemlib','Util.js'));
 var util = new Util();
 const LinkConfig = util.getConfig();
 
 function init() {
-
-    if (LinkConfig.WorkStation == undefined || LinkConfig.WorkStation == false) {
+    LinkConfig.WorkStation = LinkConfig.WorkStation || false;
+    if (LinkConfig.WorkStation == false) {
         //master 保证启动1个worker 再启动api
-        var mq = ncf.rabbitMQ(function () {
-
+        ncf.rabbitMQ(function () {
             console.log(" [*] 3 Consumer 1 start finish");
 
             var app = ncf.api();
             var server = app.listen(81, function () {
                 var host = server.address().address;
                 var port = server.address().port;
-
 
                 console.log(" [*] 4 api 启动 http://%s:%s", host, port, app.urls);
                 console.log(" [*] 启动完成. 退出按(CTRL+C).");

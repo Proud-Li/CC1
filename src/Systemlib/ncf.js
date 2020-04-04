@@ -49,24 +49,36 @@ function MQ(execute, callback) {
     });
 }
 
+
 function NCFHelp(para) {
+    para.queue = {
+        "taskId": util.GUID(),
+        "routing": para.routing,
+        "exchange":"pd.direct",
+        "remark": ""
+    };
+
     MQ(function (err, conn, channel) {
         //消息持久化
-        var exchange = 'pd.direct';
-        channel.assertExchange(exchange, 'direct', {durable: true});
+        channel.assertExchange(para.NCFQueue.exchange, 'direct', {durable: true});
         channel.publish(exchange, para.routing, new Buffer.from(JSON.stringify(para)), {persistent: true});
     });
 }
 
 function ncf() {
-    this.rabbitMQ = function (callback) {
+     this.rabbitMQ = function (callback) {
         var url = LinkConfig.MQUrl;
         amqp.connect(url, function (err, conn) {
-            if (err) return;
-
+            if (err) {
+                console.log(err);
+                return;
+            }
 
             conn.createChannel(function (err2, channel) {
-                if (err2) return;
+                if (err2) {
+                    console.log(err2);
+                    return;
+                }
                 console.log(" [*] 1 MQ 连接 ");
 
 
@@ -83,7 +95,7 @@ function ncf() {
                         "CommandCode": item,
                         "queue": {
                             "routing": entity.routing,
-                            "exchange": "JS"
+                            "exchange": "pd.direct"
                         }
                     };
 
@@ -91,7 +103,7 @@ function ncf() {
 
                 });
 
-                LinkConfig.WorkStation = LinkConfig.WorkStation == undefined ? false : LinkConfig.WorkStation;
+                LinkConfig.WorkStation = LinkConfig.WorkStation || false;
 
                 if (LinkConfig.WorkStation && LinkConfig.WorkerList != undefined) {
                     LinkConfig.WorkerList = LinkConfig.WorkerList.split(',');
@@ -128,9 +140,6 @@ function ncf() {
 
     };
 
-    this.NCFHelp = function (para) {
-        NCFHelp(para);
-    };
 
     this.api = function () {
 
@@ -198,6 +207,11 @@ function ncf() {
 
         return app;
     };
+}
+
+
+ncf.prototype.NCFHelp=function(para) {
+    NCFHelp(para);
 }
 
 module.exports=ncf;

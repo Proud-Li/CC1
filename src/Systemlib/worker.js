@@ -1,19 +1,15 @@
 var amqp = require('amqplib/callback_api');
 
-var url='amqp://localhost';
-url= 'amqp://'+'pdsr:l123456'+'@localhost:5672'+'/vhapi';
-
 var join = require('path').join;
 
 function worker() {
     this.init = function (para, channel) {
+        var routing = para.queue.routing;
+        var exchange = para.queue.exchange;
 
-
-        var exchange = 'pd.direct';
         channel.assertExchange(exchange, 'direct', {durable: true});
 
-        var routing = para.queue.routing;
-
+        //绑定
         channel.assertQueue(
             routing
             , {durable: true}
@@ -24,13 +20,32 @@ function worker() {
 
         channel.prefetch(1);
 
-
         channel.consume(
             routing
             , function (msg) {
                 var secs = msg.content.toString().split('.').length - 1;
 
-                //console.log(" [x] Received %s", msg.content.toString());
+
+                //console.log(" [x] Received %s", JSON.stringify(msg,null,4));
+/*
+ {
+ "fields": {
+ "consumerTag": "amq.ctag-8SvDJkNRdl9NR0RgRIX9aw",
+ "deliveryTag": 1,
+ "redelivered": false,
+ "exchange": "",
+ "routingKey": "PD.JS.COP_Ord"
+ },
+ "properties": {
+ "headers": {},
+ "deliveryMode": 2
+ },
+ "content": {
+ "type": "Buffer",
+ "data": []
+ }
+ }
+ */
 
                 var response = {"Status": 0, "Message": ""};
 

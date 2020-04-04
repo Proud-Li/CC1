@@ -1,11 +1,15 @@
 var amqp = require('amqplib/callback_api');
 
-var url='amqp://'+'pdsr:l818726'+'@192.168.0.102:5672'+'/vhapi';
-
 var fs = require('fs');
 var join = require('path').join;
-var Util = require(join(__dirname,'Systemlib','Util.js'));
+var Util = require(join(__dirname,'src/Systemlib','Util.js'));
 var util = new Util();
+
+var incf = require(join(__dirname,'src/Systemlib','ncf.js'));
+var ncf = new incf();
+
+var url='amqp://'+'pdsr:l818726'+'@192.168.0.102:5672'+'/vhapi';
+//var url = util.getConfig().MQUrl;
 
 amqp.connect(url, function(err, conn) {
         if (err) throw err;
@@ -30,20 +34,22 @@ amqp.connect(url, function(err, conn) {
 
              */
 
-            for(var i=0;i<10;i++) {
+            for (var i = 0; i < 1; i++) {
                 var para = {
                     "CommandCode": "ord",
                     "routing": "PD.JS.COP_Ord",
-                    "Msg": msg,
-                    "taskId": util.GUID()
+                    "DataId": "",
+                    "Msg": msg + " " + i,
+                    "remark": ""
                 };
 
-                //消息持久化
-                channel.sendToQueue(para.routing, new Buffer.from(JSON.stringify(para)), {persistent: true});
+                //推送
+                ncf.NCFHelp(para);
+
+
                 console.log(" [x] Sent '%s'", msg + ' ' + JSON.stringify(para));
 
             }
-
 
 
         });
