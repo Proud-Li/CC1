@@ -14,9 +14,9 @@ function ord() {
         console.log(" [x] in entity %s", para.toString());
 
         //var para = JSON.parse(para);
-        console.log(" [x] %s", para.Msg);
-        console.log(" [x] %s", para.taskId);
-        console.log(" [x] %s", para.routing);
+        console.log(" [x] Msg %s", para.Msg);
+        console.log(" [x] taskId %s", para.taskId);
+        console.log(" [x] routing %s", para.routing);
 
         response.Message = para.CommandCode + " rep " + para.Msg + " " + util.GUID();
 
