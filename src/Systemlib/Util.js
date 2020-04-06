@@ -46,6 +46,7 @@ function Util() {
     };
 
     this.safePath = function (value) {
+        value = value || "";
         while (value.split("\\").length > 1) {
             value = value.replace("\\", "/");
         }
