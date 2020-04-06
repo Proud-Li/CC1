@@ -11,19 +11,22 @@ var Util = require(join(__dirname, '../Systemlib', 'Util.js'));
 var util = new Util();
 const LinkConfig = util.getConfig();
 
-function callback(error, response, data) {
+function callback(error, response, data, mst) {
     if (!error && response.statusCode == 200) {
 
         try {
             var $ = cheerio.load(data);
 
-            console.log($("head title").text());
-
+            //console.log($("head title").text());
+            mst.title = $("head title").text();
 
             $("head meta").each(function (i, d) {
                 var stmp = $(d).attr("name");
-                if (stmp == "keywords" || stmp == "description") {
-                    console.log($(d).attr("content"))
+                if (stmp == "keywords") {
+                    mst.keywords = $(d).attr("content");
+                }
+                if (stmp == "description") {
+                    mst.remark = $(d).attr("content");
                 }
             });
 
@@ -56,7 +59,7 @@ function crawler_init() {
         };
 
         var url = 'https://www.bilibili.com';
-        url = 'https://www.baidu.com';
+        //url = 'https://www.baidu.com';
 
         //url = 'https://search.bilibili.com/all?keyword=%E6%B1%BD%E8%BD%A6&from_source=nav_suggest_new';
         //url = 'http://cloud_c2.gitee.io/blog/';
@@ -121,10 +124,32 @@ function crawler_init() {
                     mod.create(item);
                 }
             })()
+
+
+
+            request(options, function (err, res, data) {
+
+                callback(err, res, data, mst)
+
+                //console.log(JSON.stringify(mst, null, 4));
+
+                cmd.dbo["t_crad_urlmst"].update(
+                    //JSON.parse(JSON.stringify(mst, null, 4))
+                    {
+                        title: mst.title,
+                        keywords: mst.keywords,
+                        remark: mst.remark
+                    }
+                    , { where: { id: mst.id } })
+                    ;
+
+
+            });
+
+
+
         });
 
-
-        
 
         response.Message = para.CommandCode + " rep " + para.Msg + " ";
 

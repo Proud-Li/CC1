@@ -15,6 +15,7 @@ function dboImport(cmd) {
 
 function sequelize(DBconnect) {
 
+    /*
     // 数据库配置文件
     var sqlConfig = {
         "host": "192.168.0.102",
@@ -27,8 +28,17 @@ function sequelize(DBconnect) {
 
     sqlConfig.dialect = "mysql";
     sqlConfig.pool = { max: 10, min: 0, idle: 10000 };
+ 
 
     var xtmp = new Sequelize(sqlConfig.database, sqlConfig.user, sqlConfig.password, sqlConfig);
+
+    */
+
+    var xtmp = new Sequelize(DBconnect, {  
+        // Look to the next section for possible options
+        pool : { max: 10, min: 0, idle: 10000 }
+    })
+    
     dboImport(xtmp);
 
     this.cmd = xtmp;
