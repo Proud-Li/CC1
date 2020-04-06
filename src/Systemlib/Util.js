@@ -6,12 +6,26 @@ var join = require('path').join;
 
 function Util() {
 
+    this.getJsFiles = function (path) {
+        var jsfiles = [];
+        var files = fs.readdirSync(path);
+
+        files.forEach(function (item) {
+            var stat = fs.statSync(join(path, item));
+            if (stat.isFile() === true && file.extname(item) === '.js') {
+                jsfiles.push(item);
+            }
+        });
+        //console.log(jsfiles);
+        return jsfiles;
+    }
+
     this.getConfig = function () {
         try {
             // 同步读取
             var data = fs.readFileSync(join(__dirname, '../config.json'));
             var config = JSON.parse(data.toString());
-            if (config == undefined)config = {};
+            if (config == undefined) config = {};
             return config;
         }
         catch (e) {
@@ -39,6 +53,7 @@ function Util() {
     };
 
     this.FileNameSuffix = function (path) {
+        path = path || "";
         // path为文件路径
         var path1 = path.substr(path.lastIndexOf('/') + 1); //文件名称，去掉路径
         var path2 = path1.substring(0, path1.indexOf('.')); //文件名称去掉路径和后缀名
@@ -78,4 +93,4 @@ function Util() {
 }
 
 
-module.exports=Util;
+module.exports = Util;

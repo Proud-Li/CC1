@@ -3,15 +3,17 @@ var domain = require("domain");
 var EventEmitter = require("events").EventEmitter;
 
 var join = require('path').join;
-var Util = require(join(__dirname,'./Systemlib','Util.js'));
+var Util = require(join(__dirname,'./src/Systemlib','Util.js'));
 var util = new Util();
+
+var iEntity = require(join(__dirname,'./src/ComputeEntity','crawler_init.js'));
+
 
 function init() {
 
-//121
-    //122
-//123
-    Util.getConfig();
+    util.getConfig;
+
+    new iEntity().execute({});
 
 }
 
