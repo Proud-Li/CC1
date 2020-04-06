@@ -36,7 +36,8 @@ function sequelize(DBconnect) {
 
     var xtmp = new Sequelize(DBconnect, {  
         // Look to the next section for possible options
-        pool : { max: 10, min: 0, idle: 10000 }
+        pool : { max: 10, min: 0, idle: 10000 },
+        timezone: '+08:00'
     })
     
     dboImport(xtmp);

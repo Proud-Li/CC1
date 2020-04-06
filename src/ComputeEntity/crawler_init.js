@@ -11,6 +11,9 @@ var Util = require(join(__dirname, '../Systemlib', 'Util.js'));
 var util = new Util();
 const LinkConfig = util.getConfig();
 
+var incf = require(join(__dirname, '../Systemlib', 'ncf.js'));
+var ncf = new incf();
+
 function callback(error, response, data, mst) {
     if (!error && response.statusCode == 200) {
 
@@ -41,7 +44,7 @@ function callback(error, response, data, mst) {
 }
 
 function crawler_init() {
-    this.routing = "PD.JS.crawler";
+    this.routing = "PD.JS.crawler_init";
 
     this.execute = function (para) {
         var response = { "Status": 200, "Message": "" };
@@ -59,6 +62,9 @@ function crawler_init() {
         };
 
         var url = 'https://www.bilibili.com';
+
+        url = para.DataId || url;
+
         //url = 'https://www.baidu.com';
 
         //url = 'https://search.bilibili.com/all?keyword=%E6%B1%BD%E8%BD%A6&from_source=nav_suggest_new';
@@ -129,9 +135,16 @@ function crawler_init() {
 
             request(options, function (err, res, data) {
 
-                callback(err, res, data, mst)
+                var para = {
+                    "CommandCode": "crawler_html",
+                    "routing": "PD.JS.crawler_html",
+                    "DataId": options.url,
+                    "datas": data,
+                    "remark": ""
+                };
+                // console.log(" typeof "+typeof data);
 
-                //console.log(JSON.stringify(mst, null, 4));
+                callback(err, res, data, mst)
 
                 cmd.dbo["t_crad_urlmst"].update(
                     //JSON.parse(JSON.stringify(mst, null, 4))
@@ -142,6 +155,10 @@ function crawler_init() {
                     }
                     , { where: { id: mst.id } })
                     ;
+
+
+                //推送
+                ncf.NCFHelp(para);
 
 
             });
