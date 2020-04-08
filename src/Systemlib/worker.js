@@ -87,11 +87,11 @@ function worker() {
 
                 if (response.Status === 400 ||
                     response.Status === 404 || response.Status === 200) {
-                    let seconds = secs > 8 ? 8 : secs;
+                    secs = secs > 8000 ? 8000 : secs;
                     setTimeout(function () {
-                        console.log(" [x] Done %d %d", secs, seconds);
+                        console.log(" [x] Done %d", secs);
                         channel.ack(msg);
-                    }, seconds * 1000);
+                    }, secs + 1000);
                 }
             }
             , { noAck: false }
